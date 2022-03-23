@@ -2,9 +2,12 @@
   "name": "ts2sol",
   "version": "0.0.1",
   "description": "A CLI tool to transpile TypeScript to Solidity",
+  "author": "Franklin Chieze",
+  "repository": "https://github.com/Chieze-Franklin/ts2sol",
+  "license": "MIT",
   "main": "./lib/index.js",
   "bin": {
-    "ts2sol": "./lib/index.js"
+    "ts2sol": "./bin/ts2sol"
   },
   "scripts": {
     "build": "npm run clean:some && tsc -p .",
@@ -19,8 +22,6 @@
     "tscov": "tscov --min-coverage 90",
     "tscov:d": "tscov --details"
   },
-  "author": "chieze.franklin@gmail.com",
-  "license": "ISC",
   "dependencies": {
     "@types/fs-extra": "^9.0.13",
     "figlet": "^1.5.2",
