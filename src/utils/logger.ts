@@ -1,7 +1,7 @@
 import { red, green, cyan } from "kleur";
-import * as figlet from "figlet";
+import figlet from "figlet";
 
-import { ConsoleMessage } from "../models/console-message";
+import { ConsoleMessage } from "./console-message";
 
 const newLine = "\n";
 

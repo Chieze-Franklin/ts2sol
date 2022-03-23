@@ -1,6 +1,6 @@
 export enum ConsoleMessage {
-  TITLE = "CGX",
-  BANNER = "Generate all the recommended markdown documentation/templates for the Github and Gitlab community standards. \nFiles for CodeCommit (AWS) or Bitbucket can be generated too",
+  TITLE = "ts2sol",
+  BANNER = "A CLI tool to transpile TypeScript to Solidity",
   ERROR = "ERROR: ",
   SUCCESS = "SUCCESS: ",
   INFO = "INFO: ",
