@@ -1,9 +1,9 @@
 import fs from "fs-extra";
 import { ClassDeclaration, SourceFile } from "ts-morph";
-import ClassTranslator from "./class";
-import { ContainerTranslator } from "./transpiler";
+import ClassEmitter from "./class";
+import { BlockEmitter } from "./emitter";
 
-export default class FileTranslator extends ContainerTranslator {
+export default class FileEmitter extends BlockEmitter {
   constructor(sourcefile: SourceFile, targetFilePath: string) {
     super();
     this.children = sourcefile.getClasses();
@@ -15,20 +15,20 @@ export default class FileTranslator extends ContainerTranslator {
   sourcefile?: SourceFile;
   stream?: NodeJS.WritableStream;
 
-  translateBeginning() {
+  emitBeginning() {
     // write license
     this.stream?.write(`// SPDX-License-Identifier: GPL-3.0\n`);
     // write version
-    this.stream?.write(`pragma solidity ${this.target};${this.printNewLine()}`);
+    this.stream?.write(`pragma solidity ${this.target};${this.emitNewLine()}`);
   }
 
-  translateChildren() {
+  emitChildren() {
     this.children.forEach((child) => {
-      const classTranslator = new ClassTranslator(child, this.stream);
-      classTranslator.format = this.format;
-      classTranslator.translate();
+      const classEmitter = new ClassEmitter(child, this.stream);
+      classEmitter.format = this.format;
+      classEmitter.emit();
     });
   }
 
-  translateEnding() {}
+  emitEnding() {}
 }

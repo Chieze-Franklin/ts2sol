@@ -1,8 +1,8 @@
-import fs from "fs-extra";
 import { PropertyDeclaration } from "ts-morph";
-import { IContentTranslator } from "./transpiler";
+import { IInlineEmitter } from "./emitter";
+import translateType from "./helpers/types";
 
-export default class PropertyTranslator implements IContentTranslator {
+export default class PropertyEmitter implements IInlineEmitter {
   constructor(propDec: PropertyDeclaration, stream?: NodeJS.WritableStream) {
     this.propDec = propDec;
     this.stream = stream;
@@ -11,13 +11,13 @@ export default class PropertyTranslator implements IContentTranslator {
   propDec?: PropertyDeclaration;
   stream?: NodeJS.WritableStream;
 
-  translate() {
+  emit() {
     const propName = this.propDec?.getName();
     if (!propName) return;
 
     // write data type
-    const propType = this.propDec?.getType();
-    if (propType?.isNumber) this.stream?.write("uint ");
+    const propType = translateType(this.propDec?.getType());
+    this.stream?.write(`${propType} `);
 
     // write name
     this.stream?.write(`${propName};`);
