@@ -1,0 +1,3 @@
+class SimpleStorage {
+  storedData: number;
+}

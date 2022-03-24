@@ -13,24 +13,26 @@ export async function cli(): Promise<any> {
       type: "string",
       description: "glob pattern of the ts config file",
     })
-    .usage("Usage: --project <glob pattern>").argv;
+    .usage("Usage: --project <glob pattern>")
+    .option("format", {
+      alias: "f",
+      type: "boolean",
+      description: "determines if output files should be formatted",
+    })
+    .usage("Usage: --format (true|false)")
+    .option("target", {
+      alias: "t",
+      type: "string",
+      description: "the solidity version to target",
+    })
+    .usage("Usage: --format (true|false)").argv;
 
   console.log(argv);
 
   return await transpile({
-      sourceFiles: argv._? argv._.map((item) => item.toString()) : undefined,
-      tsConfigFilePath: argv.project,
+    format: argv.format,
+    sourceFiles: argv._ ? argv._.map((item) => item.toString()) : undefined,
+    tsConfigFilePath: argv.project,
+    target: argv.target,
   });
-
-  //   const providerAnswer: Answer = await providerQuestion();
-
-  //   if (providerAnswer.provider === ProviderValue.GITHUB) {
-  //     return await githubActions();
-  //   } else if (providerAnswer.provider === ProviderValue.GITLAB) {
-  //     return await gitlabActions();
-  //   } else if (providerAnswer.provider === ProviderValue.BITBUCKET) {
-  //     return await bitbucketActions();
-  //   } else if (providerAnswer.provider === ProviderValue.CODECOMMIT) {
-  //     return await codecommitActions();
-  //   }
 }
