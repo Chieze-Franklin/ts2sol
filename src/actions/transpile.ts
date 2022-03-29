@@ -2,7 +2,7 @@ import { StandardizedFilePath } from "@ts-morph/common";
 import fs from "fs-extra";
 import path from "path";
 import { Project } from "ts-morph";
-import FileTranslator from "../translators/file";
+import FileEmitter from "../emitters/file";
 
 export type TranspilerOptions = {
   format?: boolean;
@@ -52,9 +52,9 @@ export async function transpile(options: TranspilerOptions): Promise<any> {
       fs.mkdirSync(targetDirectoryPath);
     }
     await fs.createFile(targetFilePath);
-    const fileTranslator = new FileTranslator(file, targetFilePath);
-    if (options.format) fileTranslator.format = options.format;
-    if (options.target) fileTranslator.target = options.target;
-    fileTranslator.translate();
+    const fileEmitter = new FileEmitter(file, targetFilePath);
+    if (options.format) fileEmitter.format = options.format;
+    if (options.target) fileEmitter.target = options.target;
+    fileEmitter.emit();
   });
 }

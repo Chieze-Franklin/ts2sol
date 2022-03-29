@@ -1,6 +1,6 @@
 {
   "name": "ts2sol",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A CLI tool to transpile TypeScript to Solidity",
   "author": "Franklin Chieze",
   "repository": "https://github.com/Chieze-Franklin/ts2sol",
