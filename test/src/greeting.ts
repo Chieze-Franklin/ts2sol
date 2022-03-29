@@ -1,3 +1,0 @@
-class Greeting {
-    storedData: number;
-}

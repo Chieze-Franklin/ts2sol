@@ -1,3 +1,0 @@
-class Message {
-    message: number;
-}

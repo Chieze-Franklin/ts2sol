@@ -4,18 +4,17 @@ import {
   GetAccessorDeclaration,
   Node,
   PropertyDeclaration,
+  SetAccessorDeclaration,
 } from "ts-morph";
 import GetAccessorEmitter from "./get-accessor";
 import PropertyEmitter from "./property";
 import { BlockEmitter } from "./emitter";
+import SetAccessorEmitter from "./set-accessor";
 
 export default class ClassEmitter extends BlockEmitter {
   constructor(classDec: ClassDeclaration, stream?: NodeJS.WritableStream) {
     super();
-    this.children = [
-      ...classDec.getProperties(),
-      ...classDec.getGetAccessors(),
-    ];
+    this.children = classDec.getMembers();
     this.classDec = classDec;
     this.stream = stream;
   }
@@ -38,6 +37,8 @@ export default class ClassEmitter extends BlockEmitter {
         this.emitProperty(child);
       } else if (Node.isGetAccessorDeclaration(child)) {
         this.emitGetAccessor(child);
+      } else if (Node.isSetAccessorDeclaration(child)) {
+        this.emitSetAccessor(child);
       }
     });
   }
@@ -61,5 +62,12 @@ export default class ClassEmitter extends BlockEmitter {
     getAcsrEmitter.format = this.format;
     getAcsrEmitter.indentation = this.indentation + 2;
     getAcsrEmitter.emit();
+  }
+
+  emitSetAccessor(setAcsrDec: SetAccessorDeclaration) {
+    const setAcsrEmitter = new SetAccessorEmitter(setAcsrDec, this.stream);
+    setAcsrEmitter.format = this.format;
+    setAcsrEmitter.indentation = this.indentation + 2;
+    setAcsrEmitter.emit();
   }
 }

@@ -1,3 +1,6 @@
+import { Node, ts } from "ts-morph";
+import translateNode from "./helpers/nodes";
+
 export interface IEmitter {
   emit(): void;
   format?: boolean;
@@ -45,4 +48,28 @@ export abstract class BlockEmitter implements IBlockEmitter {
     }
   };
   protected emitNewLine = () => (this.format ? "\n" : "");
+}
+
+export abstract class MethodEmitter extends BlockEmitter {
+  children: Node<ts.Node>[] = [];
+
+  emitChildren() {
+    this.children.forEach((child) => {
+      // child.compilerNode.getChildren().forEach((c) => console.log(c.kind))
+      const translation = child.compilerNode.getChildren().map((c) => translateNode(c)).join(" ");
+      // console.log(translation)
+      
+      // indent
+      this.emitChildIndentation();
+      this.stream?.write(translation);
+      this.stream?.write(this.emitNewLine());
+    });
+  }
+
+  emitEnding() {
+    // indent
+    this.emitIndentation();
+    // write end of contract
+    this.stream?.write(`}${this.emitNewLine()}`);
+  }
 }

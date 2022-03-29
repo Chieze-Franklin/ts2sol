@@ -1,37 +1,20 @@
-import {
-  LeftHandSideExpression,
-  PostfixUnaryExpression,
-  PropertyAccessExpression,
-} from "@ts-morph/common/lib/typescript";
 import { ts } from "ts-morph";
-import translateOperator from "./operators";
+import translateExpression from "./expressions";
+import translateToken from "./tokens";
 
-export default function translateNode(node?: ts.Node) {
-  let translation = "";
-
-  switch (node?.kind) {
-    case ts.SyntaxKind.PostfixUnaryExpression:
-      console.log(node);
-      const operand = (node as PostfixUnaryExpression).operand;
-      const operator = (node as PostfixUnaryExpression).operator;
-      translation = `${operand.getText()}${translateOperator(operator)}`;
-      break;
-    case ts.SyntaxKind.PropertyAccessExpression:
-      translation = (
-        node as PropertyAccessExpression
-      ).name.escapedText.toString();
-      break;
-    case ts.SyntaxKind.PlusPlusToken:
-      translation = "++";
-      break;
-    case ts.SyntaxKind.ReturnKeyword:
-      translation = "return";
-      break;
-    case ts.SyntaxKind.SemicolonToken:
-      translation = ";";
-      break;
-    default:
+export default function translateNode(node: ts.Node): string {
+  if (isExpression(node)) {
+    return translateExpression(node);
+  } else if (ts.isToken(node)) {
+    return translateToken(node);
+  } else {
+    console.log(">>>>>>>>>>>>others");
+    console.log(node.getText());
+    console.log(node.kind);
   }
 
-  return translation;
+  return "";
 }
+
+const isExpression = (node: ts.Node) =>
+  ts.isBinaryExpression(node) || ts.isPropertyAccessExpression(node);
